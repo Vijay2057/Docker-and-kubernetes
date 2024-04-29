@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webapp-deployment
+  name: mongo-deployment
   labels:
-    app: webapp
+    app: mongo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: webapp
+      app: mongo
   template:
     metadata:
       labels:
-        app: webapp
+        app: mongo
     spec:
       containers:
-      - name: webapp
-        image: nanajanashia/k8s-demo-app:v1.0
+      - name: mongodb
+        image: mongo:5.0
         ports:
-        - containerPort: 3000
+        - containerPort: 27017
         imagePullPolicy: Always                  # Always :  means that Kubernetes will always pull the latest version of the image from the container registry
                                                  # IfNotPresent (Default Value) : which tells Kubernetes to use the locally cached image if it exists, otherwise pull the image
                                                  # Never : Kubernetes will never attempt to pull the image from a registry. Instead, it will rely entirely on images already present on the nodes in the cluster
