@@ -1,0 +1,16 @@
+FROM node:14-alpine as node
+ 
+WORKDIR /app
+ 
+COPY . .
+ 
+RUN npm install
+
+RUN npm run build --prod
+
+# Host app on http-server
+RUN npm install -g http-server
+ 
+EXPOSE 4200
+ 
+CMD ["http-server", "/app/dist/<app-root-folder(i.e app-name)>", "-p", "4200", "-c-1"]
