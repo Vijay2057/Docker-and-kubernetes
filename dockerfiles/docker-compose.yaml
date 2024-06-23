@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  backend:
+    image: backend          # need to create backend image first
+    ports:
+      - 5000:5000
+  frontend:
+    image: frontend         # need to create a frontend image first
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
