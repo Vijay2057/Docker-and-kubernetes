@@ -1,3 +1,5 @@
+#Example for Frontend+Backend (without DB)
+
 version: '3.8'
 services:
   backend:
@@ -13,7 +15,51 @@ services:
     environment:
       - REACT_APP_API_URL=http://localhost:5000/data  
 
-# Note: Here instead of "localhost" we can use internal service name "backend", i.e "http://backend:5000/data".
+# Note-1: Here instead of "localhost" we can use internal service name "backend", i.e "http://backend:5000/data".
 # But we cannot access the backend internal service form frontend container due to both front-end and backend are 
 # in different networks i.e frontend runs on browser so we are unble to access.
-                                                          
+
+
+# Note-2: But we can access database from backend with internal service name.
+
+--------------------------------------
+
+# Example for Frontend+Backend+Database
+
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - REACT_APP_API_URL=http://backend:5000  # Use service name 'backend' for inter-service communication
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/mydatabase  # Use service name 'db' for inter-service communication
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
+
