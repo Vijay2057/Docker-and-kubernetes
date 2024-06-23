@@ -10,3 +10,10 @@ services:
       - 3000:3000
     depends_on:
       - backend
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000/data  
+
+# Note: Here instead of "localhost" we can use internal service name "backend", i.e "http://backend:5000/data".
+# But we cannot access the backend internal service form frontend container due to both front-end and backend are 
+# in different networks i.e frontend runs on browser so we are unble to access.
+                                                          
